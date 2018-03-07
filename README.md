@@ -2,6 +2,7 @@
 
 This repo contains all the algorithms and functions used and created for CSE592: Convex Optimization Assignment. The code is available both in handout and in packaged form.
 To execute type this in terminal,
+
 ```sh
 $ python main.py
 ```

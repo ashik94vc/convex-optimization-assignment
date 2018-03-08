@@ -17,7 +17,7 @@ def bisection( one_d_fun, MIN, MAX, eps=1e-5, maximum_iterations=65536 ):
     value, derivative = one_d_fun( MID, 1 )
 
     # if (TODO: TERMINATION CRITERION): break
-    if (MAX - MIN) <= eps:
+    if abs(derivative)*(MAX - MID) <= eps:
         break
     if derivative < 0:
         MIN = MID

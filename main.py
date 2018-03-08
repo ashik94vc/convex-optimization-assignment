@@ -3,7 +3,7 @@
 ######
 
 import numpy as np
-from functions import boyd,quadratic,weird,circle
+from functions import boyd,quadratic,weird,circle,transformed_quadratic
 from functions.tools import draw_contour
 from algorithm import gradient_descent, newton, bisection, backtracking_line_search, exact_line_search
 
@@ -59,6 +59,30 @@ print('Optimum of the quadratic function found by GD with backtracking line sear
 x, values, runtimes, newton_xs = newton( func, initial_x, eps, maximum_iterations, backtracking_line_search )
 print('Optimum of the quadratic function found by Newton with backtracking line search', x.T)
 
+func = lambda x, order: transformed_quadratic( H, b, x, order )
+
+# Draw contour plots
+# draw_contour( func, gd_xs, newton_xs, 0, levels=np.arange(5, 400, 20), x=np.arange(-5, 5.1, 0.1), y=np.arange(-5, 5.1, 0.1))
+
+
+# Find the (1e-4)-suboptimal solution
+eps = 1e-4
+maximum_iterations = 65536
+
+initial_x = np.matrix('4.0; 0.3')
+
+x, values, runtimes, gd_xs = gradient_descent( func, initial_x, eps, maximum_iterations, exact_line_search )
+print('Optimum of the quadratic function found by GD with exact line search', x.T)
+
+x, values, runtimes, newton_xs = newton( func, initial_x, eps, maximum_iterations, exact_line_search )
+print('Optimum of the quadratic function found by Newton with exact line search', x.T)
+
+x, values, runtimes, gd_xs = gradient_descent( func, initial_x, eps, maximum_iterations, backtracking_line_search )
+print('Optimum of the quadratic function found by GD with backtracking line search', x.T)
+
+x, values, runtimes, newton_xs = newton( func, initial_x, eps, maximum_iterations, backtracking_line_search )
+print('Optimum of the quadratic function found by Newton with backtracking line search', x.T)
+
 # Draw contour plots
 # draw_contour( func, gd_xs, newton_xs, 0, levels=np.arange(5, 400, 20), x=np.arange(-5, 5.1, 0.1), y=np.arange(-5, 5.1, 0.1))
 
@@ -100,4 +124,4 @@ print('Optimum of the Circle function found by GD with backtracking line search'
 x, values, runtimes, newton_xs = newton(circle, initial_x, eps, maximum_iterations, backtracking_line_search )
 print('Optimum of the Circle function found by Newton with backtracking line search', x.T)
 
-draw_contour( circle, gd_xs, newton_xs, 1, levels=np.arange(5, 400, 20), x=np.arange(-5, 5.1, 0.1), y=np.arange(-5, 5.1, 0.1))
+# draw_contour( circle, gd_xs, newton_xs, 1, levels=np.arange(5, 400, 20), x=np.arange(-5, 5.1, 0.1), y=np.arange(-5, 5.1, 0.1))

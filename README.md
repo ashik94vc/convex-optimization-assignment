@@ -8,7 +8,7 @@ $ python main.py
 ```
 
 ## What has been added ?
-   
+
    - HW1 Questions and Theoretical solution
    - Algorithms
    - Functions
@@ -22,12 +22,15 @@ $ python main.py
    - Bisection
 
 ## Functions
-   
+
    - Weird Function
    - Quadratic Function
    - Boyd Function
+   - Circle Function
+   - Transformed Quadratic
+         ![equation](https://latex.codecogs.com/gif.latex?f(\widetilde{x})&space;=&space;\frac{1}{2}||\widetilde{x}||^{2}_{2}&space;&plus;&space;b^{T}H^{-\frac{1}{2}}\widetilde{x})
 
-## Requirements 
+## Requirements
 
 Install the dependencies after install python3.6. Use pip to install it. Alternatively install conda and just install matplotlib
 
@@ -36,4 +39,3 @@ Install the dependencies after install python3.6. Use pip to install it. Alterna
    - NumPy
    - Python3.6
    - matplotlib
-

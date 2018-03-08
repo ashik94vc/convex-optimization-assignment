@@ -3,9 +3,9 @@
 ######
 
 import numpy as np
-from functions import boyd,quadratic,weird
+from functions import boyd,quadratic,weird,circle
 from functions.tools import draw_contour
-from algorithms import gradient_descent, newton, bisection, backtracking_line_search, exact_line_search
+from algorithm import gradient_descent, newton, bisection, backtracking_line_search, exact_line_search
 
 
 # the hessian matrix of the quadratic function
@@ -60,7 +60,7 @@ x, values, runtimes, newton_xs = newton( func, initial_x, eps, maximum_iteration
 print('Optimum of the quadratic function found by Newton with backtracking line search', x.T)
 
 # Draw contour plots
-draw_contour( func, gd_xs, newton_xs, 0, levels=np.arange(5, 400, 20), x=np.arange(-5, 5.1, 0.1), y=np.arange(-5, 5.1, 0.1))
+# draw_contour( func, gd_xs, newton_xs, 0, levels=np.arange(5, 400, 20), x=np.arange(-5, 5.1, 0.1), y=np.arange(-5, 5.1, 0.1))
 
 
 # Run Netwon on the quadratic function
@@ -69,17 +69,35 @@ eps = 1e-5
 initial_x = np.matrix('-1.0; 1.0')
 maximum_iterations = 100
 
-x, values, runtimes, gd_xs = gradient_descent(boyd_example_func, initial_x, eps, maximum_iterations, exact_line_search )
+x, values, runtimes, gd_xs = gradient_descent(boyd, initial_x, eps, maximum_iterations, exact_line_search )
 print('Optimum of the Boyd\'s function found by GD with exact line search', x.T)
 
-x, values, runtimes, newton_xs = newton(boyd_example_func, initial_x, eps, maximum_iterations, exact_line_search )
+x, values, runtimes, newton_xs = newton(boyd, initial_x, eps, maximum_iterations, exact_line_search )
 print('Optimum of the Boyd\'s function found by Newton with exact line search', x.T)
 
-x, values, runtimes, gd_xs = gradient_descent(boyd_example_func, initial_x, eps, maximum_iterations, backtracking_line_search )
+x, values, runtimes, gd_xs = gradient_descent(boyd, initial_x, eps, maximum_iterations, backtracking_line_search )
 print('Optimum of the Boyd\'s function found by GD with backtracking line search', x.T)
 
-x, values, runtimes, newton_xs = newton(boyd_example_func, initial_x, eps, maximum_iterations, backtracking_line_search )
+x, values, runtimes, newton_xs = newton(boyd, initial_x, eps, maximum_iterations, backtracking_line_search )
 print('Optimum of the Boyd\'s function found by Newton with backtracking line search', x.T)
 
 # Draw contour plots
-draw_contour( boyd_example_func, gd_xs, newton_xs, 1, levels=np.arange(0, 15, 1), x=np.arange(-2, 2, 0.1), y=np.arange(-2, 2, 0.1))
+# draw_contour( boyd, gd_xs, newton_xs, 1, levels=np.arange(0, 15, 1), x=np.arange(-2, 2, 0.1), y=np.arange(-2, 2, 0.1))
+
+eps = 1e-5
+initial_x = np.matrix('5.0; 4.0')
+maximum_iterations = 100
+
+x, values, runtimes, gd_xs = gradient_descent(circle, initial_x, eps, maximum_iterations, exact_line_search )
+print('Optimum of the Circle function found by GD with exact line search', x.T)
+
+x, values, runtimes, newton_xs = newton(circle, initial_x, eps, maximum_iterations, exact_line_search )
+print('Optimum of the Circle function found by Newton with exact line search', x.T)
+
+x, values, runtimes, gd_xs = gradient_descent(circle, initial_x, eps, maximum_iterations, backtracking_line_search )
+print('Optimum of the Circle function found by GD with backtracking line search', x.T)
+
+x, values, runtimes, newton_xs = newton(circle, initial_x, eps, maximum_iterations, backtracking_line_search )
+print('Optimum of the Circle function found by Newton with backtracking line search', x.T)
+
+draw_contour( circle, gd_xs, newton_xs, 1, levels=np.arange(5, 400, 20), x=np.arange(-5, 5.1, 0.1), y=np.arange(-5, 5.1, 0.1))

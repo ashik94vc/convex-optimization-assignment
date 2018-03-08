@@ -1,3 +1,4 @@
+from algorithm import bisection
 import numpy as np
 import time
 

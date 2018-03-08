@@ -1,5 +1,6 @@
 import numpy as np
 import time
+from algorithm import exact_line_search
 
 def gradient_descent( func, initial_x, eps=1e-5, maximum_iterations=65536, linesearch=exact_line_search, *linesearch_args ):
     """

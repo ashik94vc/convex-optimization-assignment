@@ -1,6 +1,7 @@
 import numpy as np
 import time
-from bisection import bisection
+from algorithm import bisection
+from algorithm.function_on_line import function_on_line
 
 def exact_line_search( func, x, direction, eps=1e-9, maximum_iterations=65536 ):
     """

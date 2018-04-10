@@ -182,6 +182,8 @@ def gradient_descent( func, initial_x, eps=1e-5, maximum_iterations=65536, lines
         x = x + t * direction
 
         iterations += 1
+        if iterations%10000 == 0:
+            print(iterations)
         if iterations >= maximum_iterations:
             break
 
@@ -385,16 +387,16 @@ def objective_scalar_constraints( constraints, x, order=0 ):
 
         values.append(value)
 
-        if order >= 1:
-            # gradient = ( TODO: gradient of -log( constraint ), evaluated at xx )
-            # NOTE: constraint_value is the value of the constraint function at xx
-            # NOTE: constraint_gradient is the gradient of the constraint function at xx
-
-            if order == 2:
-                # hessian = ( TODO: Hessian of -log( constraint ), evaluated at xx );
-                # NOTE: constraint_value is the value of the constraint function at xx
-                # NOTE: constraint_gradient is the gradient of the constraint function at xx
-                # NOTE: constraint_hessian is the Hessian of the constraint function at xx
+        # if order >= 1:
+        #     # gradient = ( TODO: gradient of -log( constraint ), evaluated at xx )
+        #     # NOTE: constraint_value is the value of the constraint function at xx
+        #     # NOTE: constraint_gradient is the gradient of the constraint function at xx
+        #
+        #     if order == 2:
+        #         # hessian = ( TODO: Hessian of -log( constraint ), evaluated at xx );
+        #         # NOTE: constraint_value is the value of the constraint function at xx
+        #         # NOTE: constraint_gradient is the gradient of the constraint function at xx
+        #         # NOTE: constraint_hessian is the Hessian of the constraint function at xx
 
     # sum the values, gradients and hessians for all constraints
     value = np.sum( values )

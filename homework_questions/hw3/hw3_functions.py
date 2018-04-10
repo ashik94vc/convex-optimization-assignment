@@ -177,17 +177,20 @@ def quadratic_log_barrier( Q, v, A, b, x, t, order=0 ):
     # we need to make sure that we get infinity (not a complex number) if x violates the constraints
     safe_log = np.log( np.maximum( A * x + b, 0) )
     value = t * ( 0.5 * x.T * Q * x + v.T * x ) - safe_log.sum()
-
     if order == 0:
         return value
 
     elif order == 1:
-        gradient = t * ( Q * x + v ) - (np.divide(1,( A * x + b)).T * A).sum()
+        psi = A.T * np.divide(1, (A * x + b))
+        gradient = t * ( Q * x + v ) - psi
         return (value, gradient)
 
     elif order == 2:
-        gradient = t * ( Q * x + v ) - (np.maximum(1/( A * x + b),0).T * A).sum()
-        hessian = t * Q + (np.maximum(1/np.power(( A * x + b),2),0).T * np.power(A,2)).sum()
+
+        gradient = t * ( Q * x + v ) - (A.T * np.divide(1, A * x + b))
+        middle = np.square(np.divide(1, A * x + b))
+        psi = ((middle.T * A) * A.T)
+        hessian = t * Q + psi.sum()
 
         return (value, gradient, hessian)
 

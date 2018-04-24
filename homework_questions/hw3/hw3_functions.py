@@ -81,9 +81,9 @@ def main_quadratic2():
         ts.append( t )
 
         # Run the algorithms
-        x, values, runtimes, gd_xs = alg.gradient_descent( func, initial_x, eps, maximum_iterations, alg.backtracking )
+        x, values, runtimes, gd_xs = alg.gradient_descent( func, initial_x, eps, maximum_iterations, alg.backtracking_line_search )
         gd_iterations.append(len(values)-1)
-        x, values, runtimes, newton_xs = alg.newton( func, initial_x, eps, maximum_iterations, alg.backtracking )
+        x, values, runtimes, newton_xs = alg.newton( func, initial_x, eps, maximum_iterations, alg.backtracking_line_search )
         newton_iterations.append(len(values)-1)
 
         t *= mu
@@ -145,7 +145,7 @@ def main_linear():
 
     while  mu <= upper_mu:
         mus.append(mu)
-        x, newton_iterations = alg.log_barrier( f, constraints, initial_x, initial_t, mu, m, newton_eps, eps, maximum_iterations, alg.backtracking )
+        x, newton_iterations = alg.log_barrier( f, constraints, initial_x, initial_t, mu, m, newton_eps, eps, maximum_iterations, alg.backtracking_line_search )
         iterations.append( np.sum( newton_iterations ) )
         mu *= delta_mu
 
@@ -181,16 +181,16 @@ def quadratic_log_barrier( Q, v, A, b, x, t, order=0 ):
         return value
 
     elif order == 1:
-        psi = A.T * np.divide(1, (A * x + b))
+        psi = A.T * np.divide(1, np.array(A * x + b))
         gradient = t * ( Q * x + v ) - psi
         return (value, gradient)
 
     elif order == 2:
-
-        gradient = t * ( Q * x + v ) - (A.T * np.divide(1, A * x + b))
-        middle = np.square(np.divide(1, A * x + b))
-        psi = ((middle.T * A) * A.T)
-        hessian = t * Q + psi.sum()
+        # As given in Example 11.1
+        gradient = t * ( (Q * x) + v ) - A.T * np.divide(1, np.array(A * x + b))
+        d = np.diag(np.divide(1,A * x + b))
+        psi = (A.T * np.asscalar(np.square(d)) * A)
+        hessian = (t * Q) + psi
 
         return (value, gradient, hessian)
 
@@ -282,4 +282,4 @@ def draw_contour( func, gd_xs, newton_xs, levels=np.arange(5, 1000, 10), x=np.ar
         if i < 10:
             input("Press Enter to continue...")
 
-main_quadratic()
+main_linear()

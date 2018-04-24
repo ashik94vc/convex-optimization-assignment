@@ -217,7 +217,6 @@ def newton( func, initial_x, eps=1e-5, maximum_iterations=65536, linesearch=bise
 
     # newton's method updates
     while True:
-
         value, gradient, hessian = func( x , 2 )
         value = np.double( value )
         gradient = np.matrix( gradient )
@@ -236,7 +235,6 @@ def newton( func, initial_x, eps=1e-5, maximum_iterations=65536, linesearch=bise
         t = linesearch( func, x, direction )
 
         x = x + t * direction
-
         iterations += 1
         if iterations >= maximum_iterations:
             break
@@ -387,16 +385,20 @@ def objective_scalar_constraints( constraints, x, order=0 ):
 
         values.append(value)
 
-        # if order >= 1:
-        #     # gradient = ( TODO: gradient of -log( constraint ), evaluated at xx )
-        #     # NOTE: constraint_value is the value of the constraint function at xx
-        #     # NOTE: constraint_gradient is the gradient of the constraint function at xx
-        #
-        #     if order == 2:
-        #         # hessian = ( TODO: Hessian of -log( constraint ), evaluated at xx );
-        #         # NOTE: constraint_value is the value of the constraint function at xx
-        #         # NOTE: constraint_gradient is the gradient of the constraint function at xx
-        #         # NOTE: constraint_hessian is the Hessian of the constraint function at xx
+        if order >= 1:
+            # gradient = ( TODO: gradient of -log( constraint ), evaluated at xx )
+            # NOTE: constraint_value is the value of the constraint function at xx
+            # NOTE: constraint_gradient is the gradient of the constraint function at xx
+            obj_grad = lambda y,g: -g*(1/np.asscalar(y))
+            gradients.append(obj_grad(constraint_value, constraint_gradient))
+
+            if order == 2:
+                # hessian = ( TODO: Hessian of -log( constraint ), evaluated at xx );
+                # NOTE: constraint_value is the value of the constraint function at xx
+                # NOTE: constraint_gradient is the gradient of the constraint function at xx
+                # NOTE: constraint_hessian is the Hessian of the constraint function at xx
+                obj_hessian = lambda y,g,h: ((g*g.T) - np.asscalar(y)*h)*(1/np.asscalar(y)**2)
+                hessians.append(obj_hessian(constraint_value, constraint_gradient, constraint_hessian))
 
     # sum the values, gradients and hessians for all constraints
     value = np.sum( values )
@@ -450,8 +452,13 @@ def log_barrier( func, constraints, initial_x, initial_t, mu, m, newton_eps=1e-5
         newton_f = lambda x, order: objective_log_barrier( func, phi, x, t, order)
         x, newton_values, runtimes, xs = newton( newton_f, x, newton_eps, maximum_iterations, linesearch )
         newton_iterations.append( len( newton_values ) )
-
         #t = ( TODO: update t )
+        t = mu*t
+
+        if m/t < log_barrier_eps:
+            break
+
+        print("stop conditions", m/t , log_barrier_eps)
 
         #if ( TODO: termination criterion ): break; end
 

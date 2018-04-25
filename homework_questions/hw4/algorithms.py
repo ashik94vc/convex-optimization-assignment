@@ -475,7 +475,6 @@ def subgradient_descent( func, initial_x, maximum_iterations=65536, initial_step
     xs = []
     start_time = time.time()
     iterations = 0
-    alpha = None
 
     # subgradient updates
     while True:
@@ -485,13 +484,14 @@ def subgradient_descent( func, initial_x, maximum_iterations=65536, initial_step
         gradient = np.matrix( gradient )
         # updating the logs
         values.append( value )
-        runtimes.append( time.time() - start_time )
+        runtimes.append(time.time() - start_time )
         xs.append( x.copy() )
 
-        if alpha is None:
-            alpha = initial_stepsize
-        else:
-            alpha = alpha/math.sqrt(iterations)
+        alpha = initial_stepsize/math.sqrt(iterations+1)
+        # if alpha is None:
+        #     alpha = initial_stepsize
+        # else:
+        #     alpha = alpha/math.sqrt(iterations)
         # x = ( TODO: update of subgradient descent )
         x = x - alpha*gradient.T
         iterations += 1
